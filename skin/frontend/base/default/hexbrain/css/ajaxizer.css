@@ -1,0 +1,35 @@
+.hb-ajax-loading {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba(255, 255, 255, .6);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60ffffff,endColorstr=#60ffffff);
+    zoom: 1;
+}
+body.loading .hb-ajax-loading {
+    display: block;
+}
+.hb-ajax-loading div, .hb-loading {
+    height: 10%;
+    width: 10%;
+    background: black;
+    background: #fff url('../../hexbrain/images/opc-ajax-loader.gif') 50% 50% no-repeat;
+    text-transform: uppercase;
+    font-weight: bolder;
+}
+.hb-ajax-loading div {
+    position: fixed;
+    top: 44%;
+    left: 45%;
+    border: solid 5px rgba(68, 124, 42, .6);
+}
+.hb-loading {
+    margin: auto;
+    height: 18px;
+    width: 84px;
+    background: #fff url('../../hexbrain/images/opc-ajax-loader.gif') 100% 100% no-repeat;
+}

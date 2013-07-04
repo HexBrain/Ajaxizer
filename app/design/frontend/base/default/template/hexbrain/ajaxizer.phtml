@@ -1,0 +1,9 @@
+<?php $_settings = Mage::getStoreConfig('hb_ajaxizer/settings'); ?>
+<?php if (isset($_settings['enable']) && $_settings['enable']): ?>
+    <div class="hb-ajax-loading">
+        <div><?php echo $this->__('loading...') ?></div>
+    </div>
+    <script type="text/javascript">
+        var Ajaxizer = new HB_Ajaxizer(<?php echo json_encode($_settings) ?>);
+    </script>
+<?php endif; ?>

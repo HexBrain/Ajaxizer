@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * HexBrain
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to version 3 of the GPL license,
+ * that is bundled with this package in the file LICENSE, and is
+ * available online at http://www.gnu.org/licenses/gpl.txt
+ *
+ * @category    Hexbrain
+ * @package     Hexbrain_Ajaxizer
+ * @copyright   Copyright (c) 2013 HexBrain. (http://www.hexbrain.com)
+ * @license     http://opensource.org/licenses/gpl-3.0.html  GNU General Public License, version 3 (GPL-3.0)
+ */
+-->
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <file>hexbrain/js/ajaxizer.js</file>
+            </action>
+            <action method="addCss"><file>hexbrain/css/ajaxizer.css</file></action>
+        </reference>
+        <reference name="footer">
+            <block type="core/template" name="ajaxizer" template="hexbrain/ajaxizer.phtml" after="-"></block>
+        </reference>
+    </default>
+</layout>
