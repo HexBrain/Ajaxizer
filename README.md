@@ -38,7 +38,7 @@ Nick Kravchuk
 
 Licence
 -------
-[OSL - Open Software Licence 3.0](http://opensource.org/licenses/osl-3.0.php)
+[GNU General Public License, version 3 (GPL-3.0)](http://opensource.org/licenses/gpl-3.0.html)
 
 Copyright
 ---------
