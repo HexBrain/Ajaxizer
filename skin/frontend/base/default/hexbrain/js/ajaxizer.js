@@ -37,7 +37,7 @@ HB_Ajaxizer.prototype = {
                 Event.observe(select, 'change', function(e) { this.selectAttr(e, select) }.bind(this));
             }.bind(this));
         }
-        if (this.settings.scrolling != undefined && this.settings.scrolling != 0) {
+        if (this.settings.scrolling != undefined && this.settings.scrolling != 0 && $$('.products-list, .products-grid:last').length > 0) {
             var Scroll = new HB_Scroll($$('.products-list, .products-grid:last')[0], this);
         }
     },
