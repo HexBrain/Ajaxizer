@@ -22,6 +22,8 @@ Installation Instructions
 -------------------------
 1. Copy all the files into your document root.
 2. Clear the cache.
+3. Manage options under System -> Configuration -> HexBrain Modules -> Ajaxizer under admin panel
+4. Enjoy!
 
 Uninstallation
 --------------
