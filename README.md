@@ -1,6 +1,6 @@
 This extension "ajaxizes" your Magento store
 =====================
-
+[Demo Store](http://hexbrain.my.phpcloud.com/store)
 
 Facts
 -----
