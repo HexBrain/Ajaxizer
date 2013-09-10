@@ -16,15 +16,16 @@
 var HB_Ajaxizer = Class.create();
 HB_Ajaxizer.prototype = {
     initialize: function(settings) {
-        this.body = $$('body')[0];
         this.settings = settings;
-        this.leftSidebar = $$('.col-left')[0];
-        this.content = $$('.col-main')[0];
-        this.ajaxParam = 'useAjax=1';
         this.init();
     },
 
     init: function() {
+        this.body = $$('body')[0];
+        this.leftSidebar = $$('.col-left')[0];
+        this.content = $$('.col-main')[0];
+        this.topLinks = $$('.header ul.links')[0];
+        this.ajaxParam = 'useAjax=1';
         if (this.settings.layered != undefined && this.settings.layered != 0) {
             var navLinks = $$('.block-layered-nav a, .toolbar a');
             var navPicks = $$('.toolbar select');
@@ -38,7 +39,10 @@ HB_Ajaxizer.prototype = {
             }.bind(this));
         }
         if (this.settings.scrolling != undefined && this.settings.scrolling != 0 && $$('.products-list, .products-grid:last').length > 0) {
-            var Scroll = new HB_Scroll($$('.products-list, .products-grid:last')[0], this);
+            new HB_Scroll($$('.products-list, .products-grid:last')[0], this);
+        }
+        if (this.settings.cart != undefined && this.settings.cart != 0) {
+            new HB_AjaxCart(this);
         }
     },
 
@@ -55,8 +59,9 @@ HB_Ajaxizer.prototype = {
         new Ajax.Request(
             this.addAjaxToQuery(url), {
                 onSuccess: function(response) {
-                    this.leftSidebar.innerHTML = response.responseJSON.left;
-                    this.content.innerHTML = response.responseJSON.content;
+                    var json = response.responseText.evalJSON();
+                    this.content.innerHTML = json.content;
+                    this.leftSidebar.innerHTML = json.left;
                     this.body.removeClassName('loading');
                     this.modifyURI(url);
                     this.init();
@@ -92,6 +97,7 @@ HB_Scroll.prototype = {
         });
         var offset = Element.positionedOffset(this.container);
         var viewPort = document.viewport;
+        Event.stopObserving(window, 'scroll');
         Event.observe(window, 'scroll', function() {
             var cumulativeScrollOffset = viewPort.getScrollOffsets();
             if (cumulativeScrollOffset[1] + viewPort.getHeight() >= offset.top + this.container.getHeight()
@@ -156,5 +162,50 @@ HB_Scroll.prototype = {
             div = null;
             return html;
         })(node);
+    }
+}
+
+var HB_AjaxCart = Class.create();
+HB_AjaxCart.prototype = {
+    initialize: function(ajaxizer) {
+        this.ajaxizer = ajaxizer;
+        this.cartButtons = $$('.cart a, .cart button');
+        this.cartButtons.each(function(button) {
+            Event.observe(button, 'click', function(e) { this.clickButton(e, button) }.bind(this));
+        }.bind(this));
+    },
+
+    clickButton: function(event, button) {
+        if (button.readAttribute('type') == 'submit') {
+            this.ajaxizer.body.addClassName('loading');
+            var form = $(button).up('form');
+            form.request({
+                parameters: {'useAjax': 1, 'update_cart_action': button.value},
+                onSuccess: function(response) {
+                    var json = response.responseText.evalJSON();
+                    this.ajaxizer.content.innerHTML = json.content;
+                    this.ajaxizer.topLinks.replace(json.toplinks);
+                    this.ajaxizer.body.removeClassName('loading');
+                    this.ajaxizer.init();
+                }.bind(this)
+            });
+        } else if (button.readAttribute('href').indexOf('checkout/cart/delete') != -1) {
+            this.ajaxizer.body.addClassName('loading');
+            new Ajax.Request(
+                this.ajaxizer.addAjaxToQuery(button.readAttribute('href')), {
+                    onSuccess: function(response) {
+                        var json = response.responseText.evalJSON();
+                        this.ajaxizer.content.innerHTML = json.content;
+                        this.ajaxizer.topLinks.replace(json.toplinks);
+                        this.ajaxizer.body.removeClassName('loading');
+                        this.ajaxizer.init();
+                    }.bind(this)
+                }
+            );
+        } else {
+            return true;
+        }
+        event.preventDefault();
+        return false;
     }
 }

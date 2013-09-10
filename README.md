@@ -4,13 +4,18 @@ This extension "ajaxizes" your Magento store
 
 Facts
 -----
-- version: 0.1.2
+- version: 0.2.1
 - extension key: Hexbrain_Ajaxizer
 - [extension on GitHub](https://github.com/HexBrain/Ajaxizer)
 
 Description
 -----------
-This extension adds Ajax Layered Navigation and Infinity Ajax Scrolling to your store
+This extension adds the next features to your store:
+-Ajax Layered Navigation;
+-Ajax paginations;
+-Infinity Ajax Scrolling;
+-Ajax Cart
+Be careful module is still beta, you can use it on your own risk
 
 Requirements
 ------------

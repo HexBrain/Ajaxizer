@@ -18,7 +18,7 @@
 <config>
     <modules>
         <Hexbrain_Ajaxizer>
-            <version>0.1.2</version>
+            <version>0.2.1</version>
         </Hexbrain_Ajaxizer>
     </modules>
     <global>
@@ -27,6 +27,29 @@
                 <class>Hexbrain_Ajaxizer_Helper</class>
             </hb_ajaxizer>
         </helpers>
+        <models>
+            <hb_ajaxizer>
+                <class>Hexbrain_Ajaxizer_Model</class>
+            </hb_ajaxizer>
+        </models>
+        <events>
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <hb_ajaxizer>
+                        <class>hb_ajaxizer/observer</class>
+                        <method>setAjaxResponse</method>
+                    </hb_ajaxizer>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
+            <controller_response_redirect>
+                <observers>
+                    <hb_ajaxizer>
+                        <class>hb_ajaxizer/observer</class>
+                        <method>setUseAjax</method>
+                    </hb_ajaxizer>
+                </observers>
+            </controller_response_redirect>
+        </events>
     </global>
     <frontend>
         <layout>
