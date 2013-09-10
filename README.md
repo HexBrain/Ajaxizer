@@ -11,10 +11,10 @@ Facts
 Description
 -----------
 This extension adds the next features to your store:
--Ajax Layered Navigation;
--Ajax paginations;
--Infinity Ajax Scrolling;
--Ajax Cart
+- Ajax Layered Navigation;
+- Ajax paginations;
+- Infinity Ajax Scrolling;
+- Ajax Cart
 Be careful module is still beta, you can use it on your own risk
 
 Requirements
