@@ -21,25 +21,28 @@ HB_Ajaxizer.prototype = {
     },
 
     init: function() {
+        //initialize elements that can be redefined if need
         this.body = $$('body')[0];
         this.leftSidebar = $$('.col-left')[0];
         this.content = $$('.col-main')[0];
         this.topLinks = $$('.header ul.links')[0];
+        this.gridSelector = '.products-list, .products-grid:last';
+        this.gridContent = $$(this.gridSelector);
+        this.toolbar = $$('.toolbar-bottom')[0];
+        this.navLinks = $$('.block-layered-nav a, .toolbar a');
+        this.navPicks = $$('.toolbar select');
         this.ajaxParam = 'useAjax=1';
         if (this.settings.layered != undefined && this.settings.layered != 0) {
-            var navLinks = $$('.block-layered-nav a, .toolbar a');
-            var navPicks = $$('.toolbar select');
-
-            navLinks.each(function(link) {
+            this.navLinks.each(function(link) {
                 Event.observe(link, 'click', function(e) { this.clickAttr(e, link) }.bind(this));
             }.bind(this));
-            navPicks.each(function(select) {
+            this.navPicks.each(function(select) {
                 select.writeAttribute('onchange', '');
                 Event.observe(select, 'change', function(e) { this.selectAttr(e, select) }.bind(this));
             }.bind(this));
         }
-        if (this.settings.scrolling != undefined && this.settings.scrolling != 0 && $$('.products-list, .products-grid:last').length > 0) {
-            new HB_Scroll($$('.products-list, .products-grid:last')[0], this);
+        if (this.settings.scrolling != undefined && this.settings.scrolling != 0 && this.gridContent.length > 0) {
+            new HB_Scroll(this.gridContent[0], this);
         }
         if (this.settings.cart != undefined && this.settings.cart != 0) {
             new HB_AjaxCart(this);
@@ -117,7 +120,7 @@ HB_Scroll.prototype = {
     doAjax: function(url) {
         var loadDiv = document.createElement('div');
         loadDiv.innerHTML = '<div class="hb-loading">loading...</div>';
-        $$('.toolbar-bottom')[0].insert({before: loadDiv.innerHTML});
+        this.ajaxizer.toolbar.insert({before: loadDiv.innerHTML});
         new Ajax.Request(
             url.replace(this.ajaxizer.ajaxParam, ''), {
                 onSuccess: function(response) {
@@ -148,7 +151,7 @@ HB_Scroll.prototype = {
                     decorateGeneric($$('ul.products-grid'), ['odd','even','first','last']);
                     $$('body')[0].removeClassName('loading');
                     this.state = false;
-                    this.initContainer($$('.products-list, .products-grid:last')[0]);
+                    this.initContainer($$(this.ajaxizer.gridSelector)[0]);
                 }.bind(this)
             }
         );
