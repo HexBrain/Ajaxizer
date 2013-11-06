@@ -4,7 +4,7 @@ This extension "ajaxizes" your Magento store
 
 Facts
 -----
-- version: 0.2.2
+- version: 0.3.0
 - extension key: Hexbrain_Ajaxizer
 - [extension on GitHub](https://github.com/HexBrain/Ajaxizer)
 

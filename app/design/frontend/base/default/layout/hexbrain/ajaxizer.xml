@@ -20,7 +20,7 @@
         <reference name="head">
             <action method="addItem">
                 <type>skin_js</type>
-                <file>hexbrain/js/ajaxizer.js</file>
+                <file>hexbrain/js/ajaxizer.js?v=0.3.0</file>
             </action>
             <action method="addCss"><file>hexbrain/css/ajaxizer.css</file></action>
         </reference>

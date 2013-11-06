@@ -23,9 +23,8 @@ class Hexbrain_Ajaxizer_Model_Observer
      */
     public function setAjaxResponse($observer)
     {
-        $_app = Mage::app();
         $_session = Mage::getModel('core/session');
-        if ($_app->getRequest()->getParam('useAjax') == 1 || $_session->getUseAjax()) {
+        if (Mage::app()->getRequest()->getParam('useAjax') == 1 || $_session->getUseAjax()) {
             $response = Mage::getModel('hb_ajaxizer/response');
             $response->setData(Mage::helper('hb_ajaxizer')->getHtmlArray($observer->getLayout()));
             $this->_sendResponse($response);

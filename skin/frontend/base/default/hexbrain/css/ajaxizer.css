@@ -33,3 +33,26 @@ body.loading .hb-ajax-loading {
     width: 84px;
     background: #fff url('../../hexbrain/images/opc-ajax-loader.gif') 100% 100% no-repeat;
 }
+.hb-popup {
+    width: 50%;
+    border: solid 5px rgba(68, 124, 42, .6);
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    z-index: 9999;
+    background: #fff;
+    padding: 10px 10px 0 10px;
+}
+.hb-popup li {
+    display: block !important;
+}
+
+.hb-close {
+    height: 24px;
+    width: 24px;
+    background: transparent url('../images/close.png') no-repeat;
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    cursor: pointer;
+}
