@@ -51,3 +51,7 @@ Licence
 Copyright
 ---------
 (c) 2013 HexBrain
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/HexBrain/ajaxizer/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
