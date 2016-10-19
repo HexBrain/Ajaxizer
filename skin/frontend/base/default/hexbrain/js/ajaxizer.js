@@ -15,12 +15,12 @@
 "use strict";
 var HB_Ajaxizer = Class.create();
 HB_Ajaxizer.prototype = {
-    initialize: function(settings) {
+    initialize: function (settings) {
         this.settings = settings;
         this.init();
     },
 
-    init: function() {
+    init: function () {
         //initialize elements that can be redefined if need
         this.body = $$('body')[0];
         this.leftSidebar = $$('.col-left')[0];
@@ -38,12 +38,16 @@ HB_Ajaxizer.prototype = {
         this.closeButton = $$('.hb-popup .hb-close')[0];
 
         if (this.settings.layered != undefined && this.settings.layered != 0) {
-            this.navLinks.each(function(link) {
-                Event.observe(link, 'click', function(e) { this.clickAttr(e, link) }.bind(this));
+            this.navLinks.each(function (link) {
+                Event.observe(link, 'click', function (e) {
+                    this.clickAttr(e, link)
+                }.bind(this));
             }.bind(this));
-            this.navPicks.each(function(select) {
+            this.navPicks.each(function (select) {
                 select.writeAttribute('onchange', '');
-                Event.observe(select, 'change', function(e) { this.selectAttr(e, select) }.bind(this));
+                Event.observe(select, 'change', function (e) {
+                    this.selectAttr(e, select)
+                }.bind(this));
             }.bind(this));
         }
         if (this.settings.scrolling != undefined && this.settings.scrolling != 0 && this.gridContent.length > 0) {
@@ -52,10 +56,12 @@ HB_Ajaxizer.prototype = {
         if (this.settings.cart != undefined && this.settings.cart != 0) {
             var AjaxCart = new HB_AjaxCart(this);
             if (undefined != productAddToCartForm) {
-                productAddToCartForm.submit = function(button, url) {
+                productAddToCartForm.submit = function (button, url) {
                     this.submit(button, url, productAddToCartForm);
                 }.bind(AjaxCart);
-                Event.observe(this.closeButton, 'click', function() { this.closePopup() }.bind(this));
+                Event.observe(this.closeButton, 'click', function () {
+                    this.closePopup()
+                }.bind(this));
                 Event.observe(document, 'keyup', function (e) {
                     if (e.keyCode == Event.KEY_ESC) {
                         this.closePopup();
@@ -65,23 +71,23 @@ HB_Ajaxizer.prototype = {
         }
     },
 
-    closePopup: function() {
+    closePopup: function () {
         this.infobox.hide();
     },
 
-    clickAttr: function(event, link) {
+    clickAttr: function (event, link) {
         this.filterProducts(link.readAttribute('href'));
         Event.stop(event);
     },
-    selectAttr: function(event, select) {
+    selectAttr: function (event, select) {
         this.filterProducts(select.value);
     },
 
-    filterProducts: function(url) {
+    filterProducts: function (url) {
         this.body.addClassName('loading');
         new Ajax.Request(
             this.addAjaxToQuery(url), {
-                onSuccess: function(response) {
+                onSuccess: function (response) {
                     var json = response.responseText.evalJSON();
                     this.content.innerHTML = json.content;
                     this.leftSidebar.innerHTML = json.left;
@@ -93,14 +99,13 @@ HB_Ajaxizer.prototype = {
         );
     },
 
-    modifyURI: function(url) {
-        window.history.pushState({},"", url.replace(this.ajaxParam, ''));
+    modifyURI: function (url) {
+        window.history.pushState({}, "", url.replace(this.ajaxParam, ''));
     },
 
-    addAjaxToQuery: function(url)
-    {
+    addAjaxToQuery: function (url) {
         var query = url.split('?');
-        if(query.length == 1) {
+        if (query.length == 1) {
             url = url + '?' + this.ajaxParam;
         } else {
             url = url + '&' + this.ajaxParam;
@@ -111,17 +116,17 @@ HB_Ajaxizer.prototype = {
 
 var HB_Scroll = Class.create();
 HB_Scroll.prototype = {
-    initialize: function(container, ajaxizer) {
+    initialize: function (container, ajaxizer) {
         this.initContainer(container);
         this.ajaxizer = ajaxizer;
         this.state = false;
-        $$('.pager').each(function(elem) {
+        $$('.pager').each(function (elem) {
             elem.hide();
         });
         var offset = Element.positionedOffset(this.container);
         var viewPort = document.viewport;
         Event.stopObserving(window, 'scroll');
-        Event.observe(window, 'scroll', function() {
+        Event.observe(window, 'scroll', function () {
             var cumulativeScrollOffset = viewPort.getScrollOffsets();
             if (cumulativeScrollOffset[1] + viewPort.getHeight() >= offset.top + this.container.getHeight()
                 && !this.state) {
@@ -133,17 +138,17 @@ HB_Scroll.prototype = {
             }
         }.bind(this));
     },
-    initContainer: function(container) {
+    initContainer: function (container) {
         this.container = container;
     },
 
-    doAjax: function(url) {
+    doAjax: function (url) {
         var loadDiv = document.createElement('div');
         loadDiv.innerHTML = '<div class="hb-loading">loading...</div>';
         this.ajaxizer.toolbar.insert({before: loadDiv.innerHTML});
         new Ajax.Request(
             url.replace(this.ajaxizer.ajaxParam, ''), {
-                onSuccess: function(response) {
+                onSuccess: function (response) {
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(response.responseText, "application/xhtml+xml");
                     $$('.hb-loading')[0].remove();
@@ -151,7 +156,7 @@ HB_Scroll.prototype = {
                     var productHtml = '';
                     if (productList.length <= 0) {
                         var productGrid = Prototype.Selector.select('.products-grid', doc);
-                        productGrid.each(function(elem) {
+                        productGrid.each(function (elem) {
                             elem.removeClassName('first');
                             productHtml += this.outerHTML(elem);
                         }.bind(this));
@@ -165,10 +170,10 @@ HB_Scroll.prototype = {
                     } else {
                         this.container.innerHTML += productHtml;
                     }
-                    $$('.pages').each(function(elem) {
+                    $$('.pages').each(function (elem) {
                         elem.innerHTML = pages[0].innerHTML;
                     });
-                    decorateGeneric($$('ul.products-grid'), ['odd','even','first','last']);
+                    decorateGeneric($$('ul.products-grid'), ['odd', 'even', 'first', 'last']);
                     $$('body')[0].removeClassName('loading');
                     this.state = false;
                     this.initContainer($$(this.ajaxizer.gridSelector)[0]);
@@ -176,35 +181,36 @@ HB_Scroll.prototype = {
             }
         );
     },
-    outerHTML: function(node){
-    return node.outerHTML || (
-        function (n) {
-            var div = document.createElement('div'), html;
-            div.appendChild(n.cloneNode(true));
-            html = div.innerHTML;
-            div = null;
-            return html;
-        })(node);
+    outerHTML: function (node) {
+        return node.outerHTML || (function (n) {
+                var div = document.createElement('div'), html;
+                div.appendChild(n.cloneNode(true));
+                html = div.innerHTML;
+                div = null;
+                return html;
+            })(node);
     }
 }
 
 var HB_AjaxCart = Class.create();
 HB_AjaxCart.prototype = {
-    initialize: function(ajaxizer) {
+    initialize: function (ajaxizer) {
         this.ajaxizer = ajaxizer;
         this.cartButtons = $$('.cart a, .cart button');
-        this.cartButtons.each(function(button) {
-            Event.observe(button, 'click', function(e) { this.clickButton(e, button) }.bind(this));
+        this.cartButtons.each(function (button) {
+            Event.observe(button, 'click', function (e) {
+                this.clickButton(e, button)
+            }.bind(this));
         }.bind(this));
     },
 
-    clickButton: function(event, button) {
+    clickButton: function (event, button) {
         if (button.readAttribute('type') == 'submit') {
             this.ajaxizer.body.addClassName('loading');
             var form = $(button).up('form');
             form.request({
                 parameters: {'useAjax': 1, 'update_cart_action': button.value},
-                onSuccess: function(response) {
+                onSuccess: function (response) {
                     var json = response.responseText.evalJSON();
                     this.ajaxizer.content.innerHTML = json.content;
                     this.ajaxizer.topLinks.replace(json.toplinks);
@@ -216,7 +222,7 @@ HB_AjaxCart.prototype = {
             this.ajaxizer.body.addClassName('loading');
             new Ajax.Request(
                 this.ajaxizer.addAjaxToQuery(button.readAttribute('href')), {
-                    onSuccess: function(response) {
+                    onSuccess: function (response) {
                         var json = response.responseText.evalJSON();
                         this.ajaxizer.content.innerHTML = json.content;
                         this.ajaxizer.topLinks.replace(json.toplinks);
@@ -231,7 +237,7 @@ HB_AjaxCart.prototype = {
         event.preventDefault();
         return false;
     },
-    submit: function(button, url, self) {
+    submit: function (button, url, self) {
         if (self.validator.validate()) {
             var form = self.form;
             var oldUrl = form.action;
@@ -243,8 +249,8 @@ HB_AjaxCart.prototype = {
             try {
                 this.ajaxizer.body.addClassName('loading');
                 new Ajax.Request(
-                    this.ajaxizer.addAjaxToQuery(self.form.action)  + '&' + self.form.serialize(), {
-                        onSuccess: function(response) {
+                    this.ajaxizer.addAjaxToQuery(self.form.action) + '&' + self.form.serialize(), {
+                        onSuccess: function (response) {
                             var json = response.responseText.evalJSON();
                             this.ajaxizer.topLinks.replace(json.toplinks);
                             this.ajaxizer.cartSidebar.replace(json.cart_sidebar);
